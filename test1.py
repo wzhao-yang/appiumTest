@@ -82,4 +82,5 @@ time.sleep(6)
 print("滑屏结束")
 time.sleep(5)
 print("测试下")
+print("测试下")
 
