@@ -9,6 +9,7 @@ def get_driver():
     capabilities = {
         "platformName": "Android",
         # "automationName":"UiAutomator2",
+        # "appWaitActivity":"com.baidu.tieba.LogoActivity",
         "deviceName": "127.0.0.1:7555",
         "app": "C:\\Users\\pintec\\AppData\\Local\\Programs\\Appium\\testapk\\baidutieba.apk",
         "noReset": "true"
@@ -70,6 +71,10 @@ def swipe_on(direction):
         swipe_right()
 
 
+def get_login():
+    driver.find_element_by_name('我的')
+    driver.find_element_by_name('我得').click()
+
 driver = get_driver()
 swipe_on('left')
 time.sleep(6)
@@ -79,8 +84,4 @@ swipe_on('down')
 time.sleep(6)
 swipe_on('up')
 time.sleep(6)
-print("滑屏结束")
-time.sleep(5)
-print("测试下")
-print("测试下")
-
+print("测试滑屏结束")
