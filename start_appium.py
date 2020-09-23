@@ -15,7 +15,7 @@ def get_driver():
         "noReset": "true"
     }
     driver = webdriver.Remote("http://127.0.0.1:4723/wd/hub", capabilities)
-    time.sleep(30)
+    time.sleep(15)
     return driver
 
 
@@ -71,17 +71,55 @@ def swipe_on(direction):
         swipe_right()
 
 
-def get_login():
-    driver.find_element_by_name('我的')
-    driver.find_element_by_name('我得').click()
+# 点击【关注】下[戳这登录]按钮，进行跳转至登录页面
+def go_login():
+    driver.find_element_by_id('com.baidu.tieba:id/tv_concern_login_and_see_more').click()
 
-driver = get_driver()
-swipe_on('left')
-time.sleep(6)
-swipe_on('right')
-time.sleep(6)
-swipe_on('down')
-time.sleep(6)
-swipe_on('up')
-time.sleep(6)
-print("测试滑屏结束")
+
+# 在登录页面输入手机号，并且点击【下一步】按钮
+def login():
+    # driver.find_element_by_accessibility_id('QQ').click()
+    driver.find_element_by_class_name('android.widget.EditText').send_keys('15901084142')
+    time.sleep(5)
+    driver.find_element_by_class_name('android.widget.Button').click()  # 点击 下一步 按钮
+    time.sleep(6)
+    elements = driver.find_elements_by_class_name('android.widget.Button')  # 点击‘换个登录方式’按钮
+    elements[1].click()  # 页面有多个button元素，通过下标得方式进行点击
+    print("button个数:" + str(len(elements)))
+    time.sleep(10)
+    # driver.tap([(0,892), (576,955)])
+    # driver.find_element_by_accessibility_id('帐号密码登录').click()
+    webview = driver.contexts
+    print(webview)  # 打印看看有几个webview
+    for viw in webview:
+        if 'NATIVE_APP' in viw:
+            driver.switch_to.context(viw)
+            # break
+    driver.tap([(273, 920), (576, 955)])
+    # driver.find_element_by_accessibility_id('帐号密码登录').click()
+    # driver.find_element_by_xpath('//android.view.View[@text="帐号密码登录"]').click()
+    # xp = driver.find_elements_by_xpath('//android.widget.Button[@content-desc="换个登录方式"]')
+    # driver.find_element_by_xpath('//android.widget.Button[@content-desc="换个登录方式"]').click()
+    # driver.find_element_by_xpath(
+    # '//android.view.View[@resource-id="passFooter"]/../preceding-sibling::帐号密码登录').click()
+    # driver.find_element_by_xpath('//android.webkit.WebView[@class="android.view.View"]/preceding-sibling::*[@index="1"]').click()
+    driver.find_element_by_xpath \
+            (
+            '//android.webkit.WebView[@content-desc="帐号密码登录"]/android.view.View[1]/android.view.View[2]/android.view.View[1]/android.view.View[2]/android.widget.EditText').send_keys(
+        '1234567a')  # 输入密码
+    driver.find_element_by_accessibility_id('登 录').click()  # 点击登录按钮
+    print("===========登录成功=================")
+
+
+if __name__ == '__main__':
+    driver = get_driver()
+    # swipe_on('left')
+    # time.sleep(3)
+    # swipe_on('right')
+    time.sleep(3)
+    swipe_on('right')
+    time.sleep(3)
+    go_login()
+    time.sleep(15)
+    login()
+    # login_by_uiautomator()
