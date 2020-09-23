@@ -79,7 +79,7 @@ def go_login():
 # 在登录页面输入手机号，并且点击【下一步】按钮
 def login():
     # driver.find_element_by_accessibility_id('QQ').click()
-    driver.find_element_by_class_name('android.widget.EditText').send_keys('15901084142')
+    driver.find_element_by_class_name('android.widget.EditText').send_keys('xxxxxx')
     time.sleep(5)
     driver.find_element_by_class_name('android.widget.Button').click()  # 点击 下一步 按钮
     time.sleep(6)
