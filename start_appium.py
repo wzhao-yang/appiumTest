@@ -2,6 +2,8 @@
 import time
 
 from appium import webdriver
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
 
 # 定义启动模拟器配置
@@ -79,7 +81,7 @@ def go_login():
 # 在登录页面输入手机号，并且点击【下一步】按钮
 def login():
     # driver.find_element_by_accessibility_id('QQ').click()
-    driver.find_element_by_class_name('android.widget.EditText').send_keys('xxxxxx')
+    driver.find_element_by_class_name('android.widget.EditText').send_keys('xxx')
     time.sleep(5)
     driver.find_element_by_class_name('android.widget.Button').click()  # 点击 下一步 按钮
     time.sleep(6)
@@ -96,13 +98,6 @@ def login():
             driver.switch_to.context(viw)
             # break
     driver.tap([(273, 920), (576, 955)])
-    # driver.find_element_by_accessibility_id('帐号密码登录').click()
-    # driver.find_element_by_xpath('//android.view.View[@text="帐号密码登录"]').click()
-    # xp = driver.find_elements_by_xpath('//android.widget.Button[@content-desc="换个登录方式"]')
-    # driver.find_element_by_xpath('//android.widget.Button[@content-desc="换个登录方式"]').click()
-    # driver.find_element_by_xpath(
-    # '//android.view.View[@resource-id="passFooter"]/../preceding-sibling::帐号密码登录').click()
-    # driver.find_element_by_xpath('//android.webkit.WebView[@class="android.view.View"]/preceding-sibling::*[@index="1"]').click()
     driver.find_element_by_xpath \
             (
             '//android.webkit.WebView[@content-desc="帐号密码登录"]/android.view.View[1]/android.view.View[2]/android.view.View[1]/android.view.View[2]/android.widget.EditText').send_keys(
@@ -111,15 +106,52 @@ def login():
     print("===========登录成功=================")
 
 
+# 在推荐页签内，找到首帖，进行点赞并发表评论；
+def thumbs_up():
+    # driver.find_element_by_accessibility_id('推荐').click()  # 点击推荐页签
+    swipe_on('left')
+    time.sleep(3)
+    driver.find_element_by_id('com.baidu.tieba:id/img_agree').click()  # 点赞
+    time.sleep(3)
+    driver.find_element_by_id('com.baidu.tieba:id/thread_info_commont_img').click()  # 点击评论按钮
+    time.sleep(3)
+    # driver.find_element_by_id('com.baidu.tieba:id/pb_editor_tool_comment_reply_text').click()  # 点击文本框
+    driver.find_element_by_android_uiautomator(
+        'new UiSelector().resourceId("com.baidu.tieba:id/pb_editor_tool_comment_reply_text")').click()  # 点击评论文本款
+    time.sleep(3)
+    driver.find_element_by_class_name("android.widget.EditText").send_keys("我来聊几句，不知道说什么呢？")
+
+    time.sleep(3)
+    driver.find_element_by_xpath(
+        '/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout[1]/android.view.ViewGroup/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.view.View').click()  # 点击文本框
+    print('发表评论完成')
+    time.sleep(3)
+    swipe_on('down')
+    time.sleep(1)
+    swipe_on('up')
+    swipe_on('left')
+
+
+# 获取到tost信息
+def get_tost():
+    time.sleep(2)
+    driver.find_element_by_id('android.widget.EditText').send_keys('xxxx')
+    tost_element = ("xpath", "//*[contains(@text,'请输入密码')]")
+    WebDriverWait(driver, 10, 0.1).until(EC.presence_of_element_located(tost_element))
+
+
 if __name__ == '__main__':
     driver = get_driver()
-    # swipe_on('left')
+    # # swipe_on('left')
+    # # time.sleep(3)
+    # # swipe_on('right')
     # time.sleep(3)
     # swipe_on('right')
-    time.sleep(3)
-    swipe_on('right')
-    time.sleep(3)
-    go_login()
-    time.sleep(15)
-    login()
+    # time.sleep(3)
+    # go_login()
+    # time.sleep(15)
+    # login()
+    # time.sleep(10)
+    thumbs_up()
+    get_tost()
     # login_by_uiautomator()
