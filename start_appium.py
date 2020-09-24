@@ -132,7 +132,7 @@ def thumbs_up():
     swipe_on('left')
 
 
-# 获取到tost信息
+# 获取到tost信息，要导入selenium包得形式
 def get_tost():
     time.sleep(2)
     driver.find_element_by_id('android.widget.EditText').send_keys('xxxx')
@@ -153,5 +153,6 @@ if __name__ == '__main__':
     # login()
     # time.sleep(10)
     thumbs_up()
+    time.sleep(1)
     get_tost()
     # login_by_uiautomator()
